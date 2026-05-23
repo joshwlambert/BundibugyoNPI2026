@@ -1,0 +1,9 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^\.Rhistory$
+^\.DS_Store$
+^\.gitignore$
+^\.github$
+^inst/bash$
+^inst/paper/.*\.(aux|bbl|blg|fdb_latexmk|fls|log|out|synctex\.gz|toc)$
