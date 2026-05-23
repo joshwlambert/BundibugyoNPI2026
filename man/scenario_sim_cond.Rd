@@ -48,7 +48,10 @@ options for the \pkg{ringbp} model, returned by \code{\link[ringbp:sim_opts]{sim
 
 \item{cond}{A list including:
 * `max_attempts`: the maximum number of attempts to simulate each outbreak
-that meets conditioning before erroring
+that meets conditioning before erroring. The `max_attempts` applies to
+each outbreak simulation iteration, so if the `scenario_sim()` runs
+100 replicates (`n = 100`) and `max_attempts = 1000` then there may be
+up to 100,000 outbreaks simulated.
 * `target_weeks`: an `integer` vector of weeks during which the cumulative
 outbreak size is checked against `target_cases`
 * `target_cases`: a `numeric` vector of length 2 with the lower and upper
