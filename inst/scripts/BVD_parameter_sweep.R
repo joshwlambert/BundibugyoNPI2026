@@ -1,3 +1,4 @@
+library(BundibugyoNPI2026)
 library(ringbp)
 library(data.table)
 library(epiparameter)
@@ -56,13 +57,18 @@ scenarios <- merge(
   expanded_groups, expanded_incub, by = non_list_cols, allow.cartesian = TRUE
 )
 
+# Day on which the NPI package activates: contact tracing (gated on contact
+# exposure time) and testing (gated on symptom onset time) both switch on for
+# events occurring strictly after this day.
+npi_start_day <- 42
+
 symptomatic_traced <- list(
-  CT0 = \(t) ifelse(test = t > 42, yes = 0, no = 0),
-  CT20 = \(t) ifelse(test = t > 42, yes = 0.2, no = 0),
-  CT40 = \(t) ifelse(test = t > 42, yes = 0.4, no = 0),
-  CT60 = \(t) ifelse(test = t > 42, yes = 0.6, no = 0),
-  CT80 = \(t) ifelse(test = t > 42, yes = 0.8, no = 0),
-  CT100 = \(t) ifelse(test = t > 42, yes = 1, no = 0)
+  CT0 = \(t) ifelse(t > npi_start_day, 0, 0),
+  CT20 = \(t) ifelse(t > npi_start_day, 0.2, 0),
+  CT40 = \(t) ifelse(t > npi_start_day, 0.4, 0),
+  CT60 = \(t) ifelse(t > npi_start_day, 0.6, 0),
+  CT80 = \(t) ifelse(t > npi_start_day, 0.8, 0),
+  CT100 = \(t) ifelse(t > npi_start_day, 1, 0)
 )
 
 idx <- CJ(row_idx = 1:nrow(scenarios), fn_idx = 1:length(symptomatic_traced))
@@ -99,7 +105,10 @@ scenario_sims[, sims := lapply(data, \(x, n) {
     ),
     interventions = intervention_opts(
       quarantine = x$quarantine,
-      test_sensitivity = x$test_sensitivity
+      test_sensitivity = local({
+        sens <- x$test_sensitivity
+        \(t) ifelse(t > npi_start_day, sens, 0)
+      })
     ),
     sim = sim_opts(
       cap_max_days = x$cap_max_days,
