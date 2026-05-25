@@ -3,10 +3,20 @@ library(ringbp)
 library(data.table)
 library(epiparameter)
 
-onset_to_isolation_params <- epiparameter::convert_summary_stats_to_params(
+slow_onset_to_isolation_params <- epiparameter::convert_summary_stats_to_params(
   "gamma",
   mean = 5,
-  sd   = 2
+  sd   = 1
+)
+medium_onset_to_isolation_params <- epiparameter::convert_summary_stats_to_params(
+  "gamma",
+  mean = 3,
+  sd   = 1
+)
+fast_onset_to_isolation_params <- epiparameter::convert_summary_stats_to_params(
+  "gamma",
+  mean = 1,
+  sd   = 1
 )
 ebola_incubation_period <- epiparameter::epiparameter_db(
   disease = "Ebola",
@@ -18,12 +28,22 @@ ebola_incubation_period <- epiparameter::epiparameter_db(
 scenarios <- data.table(
   expand.grid(
     delay_group = list(data.table(
-      delay = c("standard"),
+      delay = c("slow", "medium", "fast"),
       onset_to_isolation = c(
         \(n) rgamma(
           n= n,
-          shape = onset_to_isolation_params$shape,
-          scale = onset_to_isolation_params$scale
+          shape = slow_onset_to_isolation_params$shape,
+          scale = slow_onset_to_isolation_params$scale
+        ),
+        \(n) rgamma(
+          n= n,
+          shape = medium_onset_to_isolation_params$shape,
+          scale = medium_onset_to_isolation_params$scale
+        ),
+        \(n) rgamma(
+          n= n,
+          shape = fast_onset_to_isolation_params$shape,
+          scale = fast_onset_to_isolation_params$scale
         )
       )
     )),
