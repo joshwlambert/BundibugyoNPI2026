@@ -103,7 +103,7 @@ scenarios[, scenario :=  1:.N]
 
 scenario_sims <- scenarios[, list(data = list(.SD)), by = scenario]
 
-n <- 10
+n <- 100
 
 # Run parameter sweep
 scenario_sims[, sims := lapply(data, \(x, n) {
