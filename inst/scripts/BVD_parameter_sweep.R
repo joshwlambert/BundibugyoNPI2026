@@ -2,6 +2,15 @@ library(BundibugyoNPI2026)
 library(ringbp)
 library(data.table)
 library(epiparameter)
+library(future)
+library(future.apply)
+
+# Parallel plan: one worker per allocated SLURM CPU when running on the HPC,
+# falls back to a sensible local default otherwise.
+n_workers <- as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", unset = NA))
+if (is.na(n_workers)) n_workers <- max(1L, parallel::detectCores() - 1L)
+future::plan(future::multicore, workers = n_workers)
+message("future workers: ", n_workers)
 
 slow_onset_to_isolation_params <- epiparameter::convert_summary_stats_to_params(
   "gamma",
@@ -105,8 +114,8 @@ scenario_sims <- scenarios[, list(data = list(.SD)), by = scenario]
 
 n <- 100
 
-# Run parameter sweep
-scenario_sims[, sims := lapply(data, \(x, n) {
+# Run parameter sweep (one scenario per worker)
+scenario_sims[, sims := future.apply::future_lapply(data, \(x, n) {
   scenario_sim_cond(
     n = n,
     initial_cases = x$initial_cases,
@@ -141,7 +150,8 @@ scenario_sims[, sims := lapply(data, \(x, n) {
     )
   )
 },
-n = n
+n = n,
+future.seed = TRUE
 )]
 
 saveRDS(
