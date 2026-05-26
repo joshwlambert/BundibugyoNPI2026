@@ -62,15 +62,15 @@ scenarios <- data.table(
         as.function(ebola_incubation_period, func_type = "generate")
       )
     )),
-    r0_community = c(2, 3, 4),
+    r0_community = c(2, 3),
     r0_isolated = 0,
     disp_community = 0.27,
     disp_isolated = 1,
-    prop_presymptomatic = c(0.01),
-    prop_asymptomatic = c(0.01),
+    prop_presymptomatic = c(0),
+    prop_asymptomatic = c(0),
     initial_cases = c(1),
     quarantine = c(FALSE, TRUE),
-    test_sensitivity = 0.75,
+    test_sensitivity = c(0.5, 0.75, 1),
     cap_max_days = 730,
     cap_cases = 10000
   )
