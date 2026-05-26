@@ -112,7 +112,7 @@ scenarios[, scenario :=  1:.N]
 
 scenario_sims <- scenarios[, list(data = list(.SD)), by = scenario]
 
-n <- 100
+n <- 200
 
 # Run parameter sweep (one scenario per worker)
 scenario_sims[, sims := future.apply::future_lapply(data, \(x, n) {
@@ -145,7 +145,7 @@ scenario_sims[, sims := future.apply::future_lapply(data, \(x, n) {
     ),
     cond = list(
       max_attempts = 1000,
-      target_weeks = c(5, 7),
+      target_weeks = 5:7,
       target_cases = c(440, 2230)
     )
   )
