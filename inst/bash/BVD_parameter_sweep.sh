@@ -3,7 +3,7 @@
 #SBATCH --partition=regular
 #SBATCH --ntasks=1
 #SBATCH --nodes=1
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=18
 #SBATCH --mem=12GB
 #SBATCH --time=05:00:00
 #SBATCH --output=BVD_parameter_sweep.log
