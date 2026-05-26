@@ -1,5 +1,7 @@
 \documentclass[12pt, letterpaper]{article}
 \usepackage{graphicx}
+\usepackage{float}
+\usepackage{url}
 \usepackage{geometry}
 \geometry{
   a4paper,
@@ -18,51 +20,61 @@
 
 \section{Introduction}
 
-On May 16 2026 the World Health Organisation stated there were 246 suspected cases of Ebola virus disease caused by the Bundibugyo virus, with eight laboratory-confirmed cases in the Democratic Republic of the Congo (DRC) \citep{who2026pheic}. Two cases have also been confirmed in Kampala, Uganda. Both individuals had travelled from the DRC \citep{who2026pheic}. However, there is likely an underascertainment of the total cases involved in the Bundibugyo virus outbreak, with a Imperial report estimating the outbreak size on 18 May 2026 was likely 400 - 800 cases in the DRC, with a possibility of more than 1,000 cases \citep{mccabe2026estimation}. A second analysis of the true outbreak size using a joint modelling approach finds the most likely total number of Ebola cases to be 450 (90\% CrI 282 - 1280) \citep{abbott2026bvdoutbreaksize}. On May 17 the WHO declared the Bundibugyo virus outbreak a public health emergency of international concern (PHEIC) \citep{who2026pheic}. On May 19, the Ministries of Health for the DRC and Uganda reported: 536 suspected cases, 105 probable cases, 34 confirmed cases \citep{cdc2026ebola}. There remain only two known cases in Uganda \citep{cdc2026ebola}. \\
+As of 24 May 2026 there were 906 cumulative suspected cases and 105 confirmed cases of Ebola virus disease caused by the Bundibugyo virus in the ongoing epidemic \citep{insp2026sitrep009}. The outbreak is primarily in the eastern region of the Democratic Republic of the Congo (DRC), mostly in the Ituri Province, but with confirmed cases in North Kivu and South Kivu \citep{insp2026sitrep009}. There are five confirmed cases in Uganda, three imported from the DRC and two secondary cases among their contacts \citep{reuters2026uganda5cases}. On 17 May 2026 the World Health Organization (WHO) declared the Bundibugyo virus outbreak a public health emergency of international concern (PHEIC) \citep{who2026pheic}. \\
 
-The Bundibugyo species of Ebola lacks licensed pharmaceutical interventions such as antivirals and vaccines, unlike the Ebola Zaire species, for which a vaccine has been approved \citep{cepi2026bundibugyo}. With strong evidence of epidemic growth from increasing suspected cases \citep{cdc2026ebola} ($R_t > 1$), Public Health and Social Measures (PHSMs), a type of non-pharmaceutical intervention, are required to bring the outbreak under control. Isolation of cases that test positive for Ebola, and tracing of their contacts is a standard response strategy for Ebola outbreaks$^6$. \\
+There is likely an underascertainment of the total cases involved in the Bundibugyo virus outbreak. A report from Imperial College London estimated the total outbreak size on 20 May 2026 was likely 400--900 cases, with a possibility of more than 1,000 cases, when reported cases were ?? \citep{mccabe2026estimation}. A second analysis of the true outbreak size used a joint modelling approach found the most likely total number of Ebola cases on ?? May to be 930 (90\% CrI 483--2234) \citep{abbott2026bvdoutbreaksize}. \\
 
-Here we test the effectiveness and feasibility of controlling the ongoing Bundibugyo virus outbreak in the DRC using a mathematical model. We condition the outbreak to have similar dynamics from the estimated outbreak start date, assuming a single spillover event into the human population, and then activate isolation and contact tracing of cases to evaluate whether such a response, activated mid-outbreak, and without other measures, can help bring an end to the outbreak and provide an estimate to the duration of the outbreak remaining.
+Genetic evidence points to a single spillover event with an outbreak start date around 11 April 2026 \citep{virological2026bundibugyo}. \\
+
+Bundibugyo ebolavirus has no licensed vaccine or therapeutic, unlike Zaire ebolavirus, for which both a vaccine (Ervebo) and monoclonal antibody therapies (Inmazeb and Ebanga) have been approved \citep{cepi2026bundibugyo}. With strong evidence of epidemic growth from increasing suspected cases \citep{insp2026sitrep009} ($R_t > 1$), Public Health and Social Measures (PHSMs), a type of non-pharmaceutical intervention, are required to bring the outbreak under control. Isolation of cases that test positive for Ebola, and tracing of their contacts is a standard response strategy for Ebola outbreaks \citep{who2015contacttracing}. \\
+
+Here we test the effectiveness and feasibility of controlling the ongoing Bundibugyo virus outbreak in the DRC using a mathematical model. We simulate the Bundibugyo outbreak, assuming a single spillover event into the human population, and no PHSMs from the estimated outbreak start date to the alert of the public health emergency and activation of response efforts. In the model isolation and contact tracing of cases are activated mid-outbreak to evaluate whether such a response, without other countermeasures, can help bring an end to the outbreak and provide an estimate to the epidemic duration before the number of cases can be brought to zero.
 
 \section{Methods}
 
-We use a stochastic individual-level branching process model of disease spread in the population. We assume a single index case initiates the outbreak and that transmission in the community is defined by a Negative Binomial distribution with a basic reproduction number ($R_0$) of 3 (other values of $R_0$ are tested in a sensitivity analysis in the appendix). There is little evidence to inform the individual-level heterogeneity in transmission for Bundibugyo virus. A systematic review of Ebola virus disease finds that most estimates show moderate to high heterogeneity ($k < 1$) \citep{nash2024ebola}. We use the estimate of \citet{polonsky2021novel} from the 2018-2020 Ebola epidemic in the DRC ($k = 0.27$). \\
+We use a stochastic individual-level branching process model of disease spread in the population. We assume a single index case initiates the outbreak and that transmission in the community is defined by a Negative Binomial offspring distribution with a mean equal to the basic reproduction number ($R_0$), and a dispersion parameter ($k$) to define the individual-level variability in transmission. At present there are no precise estimates for the $R_0$ for the current Bundibugyo outbreak. We set $R_0$ to 2.0, 3.0 and 4.0, based on recent growth in suspected and confirmed cases \citep{insp2026sitrep009}, to explore the the sensitivity of our results to assumed Ebola transmissibility. There is little evidence to inform the individual-level heterogeneity in transmission for Bundibugyo virus. A systematic review of Ebola virus disease found that most estimates show moderate to high heterogeneity ($k < 1$) \citep{nash2024ebola}. We use the estimate of \citet{polonsky2021novel} from the 2018--2020 Ebola epidemic in the DRC ($k = 0.27$). \\
 
-Ebola cases are isolated after a delay from symptom onset. We model this delay from onset-to-isolation as a Gamma distribution with a mean of 5 days and a standard deviation of 2 days (other parameters of the onset-to-isolation distribution are tested in a sensitivity analysis in the appendix). Cases can be isolated earlier than the delay after symptom onset if they are traced as a contact of a known case (i.e. their infector). When a contact is traced they are isolated as soon as their infector is isolated (or after their delay from symptom onset if earlier). Isolation is assumed to reduce all further transmission ($R_0^\mathrm{iso} = 0$). We assess how contact tracing ascertainments influences the probability of bringing the outbreak under control. \\
+Ebola cases are isolated after a delay from symptom onset. We model this delay from onset-to-isolation as a Gamma distribution. To evaluate how the speed of isolating cases with a positive test result impacts the ability to bring the outbreak under control, we run scenarios with a mean onset-to-isolation delay of 5 days, 3 days and 1 day (all assuming a standard deviation of 1 day). Cases can be isolated earlier than the delay after symptom onset if they are traced as a contact of a known case (i.e. their infector). When a contact is traced they are isolated as soon as their infector is isolated (or after their delay from symptom onset if earlier). Isolation is assumed to reduce all further transmission ($R_0^\mathrm{iso} = 0$). We assess how contact tracing ascertainment influences the probability of bringing the outbreak under control, varying the percentage of contacts traced between 0\% and 100\% at 20\% intervals. \\
 
-To simulate the speed of transmission we use the incubation period of the Bundibugyo virus [find incubation period] and sample the generation time between cases by sampling from a skew normal distribution parameterised using the proportion of transmission that occurs before or after symptom onset \citep{hellewell2020feasibility}. We assume that 1\% of Bundibugyo virus transmission events occur prior to symptom onset, which is consistent with previous Ebola outbreaks, although the proportion of presymptomatic transmission for Bundibugyo is uncertain. Our epidemic model assumes a symptom-based isolation and contact tracing system. Therefore, asymptomatic cases are assumed to be missed by the intervention and continue to transmit in the community with the same transmissibility as symptomatic cases. \\
+To simulate the speed of transmission the model samples the generation time by first sampling each case's symptom onset time from the incubation period, then drawing the infection time of each secondary case from a skew-normal distribution centred on the infector's symptom onset and parameterised by the proportion of transmission that occurs before symptom onset \citep{hellewell2020feasibility}. We use an incubation period estimated from the 2014 Ebola outbreak in West Africa (Gamma distribution, mean = 10.3 days, SD = 8.2 days) \citep{whoebolateam2015westafrica}. This is similar to the reported incubation period of the Bundibugyo virus (2-21 days, \citep{cepi2026bundibugyo}). We assume that 1\% of Bundibugyo virus transmission events occur prior to symptom onset, which is consistent with previous Ebola outbreaks \citep{cdc2026ebolaabout}. Our epidemic model assumes a symptom-based isolation and contact tracing system. Therefore, asymptomatic cases are assumed to be missed by the intervention and continue to transmit in the community with the same transmissibility as symptomatic cases. We assume 1\% of Bundibugyo cases are asymptomatic. Again following evidence from past Ebola epidemics which found little evidence of asymptomatic or paucisymptomatic cases \citep{mbala2017asymptomatic}. \\
 
-To simulate scenarios that matched the ongoing Bundibugyo virus in the DRC we conditioned our simulation to have at least 300 cases and less than 1300 cases between 3 and 5 week into the outbreak. We assume that no PHSMs (i.e. isolation of cases or contact tracing) have been active from the start of the outbreak (spillover infection) to the present (20 May 2026). Then from the present into the future we assume that individuals that are symptomatic or contact traced from a symptomatic individual are isolated to prevent further infections.
+To simulate scenarios consistent with the ongoing Bundibugyo virus outbreak in the DRC, we conditioned each simulation (single index case) on having a cumulative case count in $[440,\,2230]$ in at least one of weeks 5, 6 or 7 of the outbreak. Conditioning was implemented by rejection sampling: branching-process simulations were re-run with independent random seeds until each replicate produced a trajectory meeting the criterion, with up to 1{,}000 attempts permitted per accepted replicate. We retained 200 accepted replicates per scenario. We assume that no PHSMs (i.e. isolation of cases or contact tracing) are active for the first 42 days of the outbreak (from the spillover infection). After day 42 we assume that individuals that are symptomatic or contact traced from a symptomatic individual are tested and isolated if they receive a positive test result to prevent further infections. We simulate the outbreak for a maximum of 2 years (730 days). \\
 
-\subsection{Counterfactual without NPIs}
+We assume a test sensitivity of 75\%. There are no diagnostic assays specifically developed or validated for Bundibugyo virus; rapid antigen tests and the most widely deployed PCR-based assays were developed and validated primarily against Zaire ebolavirus \citep{broadhurst2016diagnostics}. We therefore assume an imperfect sensitivity of 75\% to reflect the expectation that a proportion of true Bundibugyo cases will return false-negative results when tested with assays optimised for other Ebolavirus species. Only symptomatic cases are tested. Cases returning a false-negative result are not isolated and continue to transmit in the community. \\
 
-To isolate the effect of isolation and contact tracing, we re-ran each of the 10 accepted scenarios with the same random seed but with no NPIs ever activated. All other parameters were held at their main-analysis values. Because in the main analysis NPIs only activate after day 35, each counterfactual trajectory is identical to its conditioned counterpart up to day 35 and diverges from that point onwards, providing a paired comparison of outbreak dynamics with and without intervention.
+We define outbreak control as no new cases of Ebola virus disease from a certain date to the end of the outbreak. This is equivalent to extinction as we only have a single introduction of the virus into the human population with no subsequent spillover events. In our simulation setup we assume that if the cumulative number of infections exceeds 10,000 then that specific outbreak is considered uncontrollable. We test for outbreak control (extinction) at 3, 6 and 12 months from the activation of the PHSMs.
 
 \section{Results}
 
-For a baseline scenario where 50\% of contacts are successfully traced we show that for outbreaks similar to the current Ebola Bundibugyo virus epidemic, the number of new cases per week is below 15 (Figure \ref{fig:WeeklyCasesNPI}).
+The $R_0$ for transmission in the community impacts the ability to control this Bundibugyo Ebola epidemic (Figure \ref{fig:OutbreakControl}). There is a remote chance ($<$ 5\%) of ending the outbreak within 3 months from the activation of PHSMs, namely isolation of test-positive cases and contact tracing. Only in the scenario where $R_0$ = 2 and 100\% of contacts for infectious individuals are traced does the outbreak have a highly unlikely ($>$ 15\%) chance of ending (extinction) within 3 months with NPIs (Figure \ref{fig:OutbreakControl}). \\
 
-\begin{figure}
-  \includegraphics[width=\textwidth]{../plots/BundibugyoNPIWeeklyCases.png}
-  \caption{Weekly cases of Bundibugyo virus for 10 outbreak simulations that meet the conditioning of more than 300 cases and less than 1300 cases between weeks 3-5. The dashed vertical line is the date isolation and contact tracing are activated (day 35).}
-  \label{fig:WeeklyCasesNPI}
+If $R_0$ is around or below 2 then contact tracing at least 80\% of contacts shows a realistic to highly likely possibility of outbreak control within 6--12 months of PHSMs being active (Figure \ref{fig:OutbreakControl}). If community $R_0$ is 3 then 100\% of contacts need to be traced to have more than a remote chance of control, and even with 12 months of interventions, there is less than a 50\% chance of control. A community $R_0$ of 4, with no PHSMs for the first 42 days, shows a remote chance of the outbreak ending within a year (Figure \ref{fig:OutbreakControl}). \\
+
+\begin{figure}[H]
+  \includegraphics[width=\textwidth]{../plots/outbreak_control.png}
+  \caption{Proportion of simulated Bundibugyo virus outbreaks controlled (no new cases by the evaluation horizon) within 3, 6 and 12 months of PHSM activation, as a function of the percentage of infectious contacts traced (0\%, 20\%, 40\%, 60\%, 80\%, 100\%). Each point is the proportion of 100 conditioned simulations meeting the control criterion. PHSM activation is modelled as day 42 of the outbreak. The mean onset-to-isolation delay is fixed at 3 days (Gamma, SD = 1 day). Colours distinguish basic reproduction numbers $R_0$ = 2.0, 3.0 and 4.0.}
+  \label{fig:OutbreakControl}
 \end{figure}
 
-However, if the highly variable (overdispersed) individual-level transmission is to be trusted then the outbreak is likely to not continue epidemic growth and instead end, without the activation of isolation and contact tracing (Figure \ref{fig:WeeklyCasesNoNPI}).
+All results described assume a mean time delay of 3 days from symptom onset to isolation, which includes taking a test and receiving the positive result. Assuming a longer mean delay to isolating cases of 5 days does not drastically alter the results of the 3-day delay, with probabilities of control marginally worse (for all scenarios not at 0\% or 100\% of outbreaks controlled) (Figure \ref{fig:OutbreakControlIsoSpeed}). If cases can be isolated on average 1 day after symptom onset and $R_0 \sim$ 2, outbreak control is likely within a year if at least 20\% of contacts are successfully traced. Outbreak control within 12 months is highly likely if contact tracing can ascertain $>$ 40\% of contacts. When $R_0 > 2$ contact tracing needs to be comprehensive (close to 100\%) for control within a year, and even then, the chance of control within 6 months is unlikely to remote (Figure \ref{fig:OutbreakControlIsoSpeed}). \\
 
-\begin{figure}
-  \includegraphics[width=\textwidth]{../plots/BundibugyoNoNPIWeeklyCases.png}
-  \caption{Weekly cases of Bundibugyo virus for 10 outbreak simulations that meet the conditioning of more than 300 cases and less than 1300 cases between weeks 3-5. The dashed vertical line is the date isolation and contact tracing are activated (day 35).}
-  \label{fig:WeeklyCasesNoNPI}
+\begin{figure}[H]
+  \includegraphics[width=\textwidth]{../plots/outbreak_control_iso_speed.png}
+  \caption{Proportion of simulated Bundibugyo virus outbreaks controlled (no new cases by the evaluation horizon) within 3, 6 and 12 months (columns) of PHSM activation, as a function of the percentage of infectious contacts traced. Rows show three mean onset-to-isolation delays (top to bottom: 1, 3 and 5 days; Gamma, SD = 1 day). Each point is the proportion of 100 conditioned simulations meeting the control criterion. PHSM activation is modelled as day 42 of the outbreak. Colours distinguish basic reproduction numbers $R_0$ = 2.0, 3.0 and 4.0.}
+  \label{fig:OutbreakControlIsoSpeed}
 \end{figure}
 
-\subsection{Duration of outbreak }
-
+The descriptions of probability in this report correspond to those in the UK Government Probability Yardstick \citep{phia2025uncertainty}.
 
 \section{Discussion}
 
 \begin{itemize}
-  \item Information on the transmission network would allow a better estimate of the individual-level heterogeneity in transmission, such as \cite{Althaus2015}.
+  \item Information on the transmission network would allow a better estimate of the individual-level heterogeneity in transmission (e.g. \cite{Althaus2015}). If transmission is more homogeneous between people in the community then, theoretically, the outbreak would be less controllable \citep{lloydsmith2005superspreading}.
+  \item Given the isolation and contact tracing system we model assumes a positive test result to isolate and we assume a test sensitivity of 75\% once the intervention is active, testing effectiveness of outbreak control with different sensitivity profile will be important. We could also model the improvement of test sensitivity through the outbreak as tests designed for Bundibugyo become available.
+  \item We do not model capacity constrains on testing, isolating and contact tracing. Each of these are resource-limited aspects and if the number of suspected cases continues to rise these may become overwhelmed, reducing the efficacy of the intervention, or precipitate moving to exposure-based quarantine that does not require a positive test for a contact to isolate once traced.
+  \item Our model does not account for the geographic spread of the Bundibugyo virus, and any geographical variation in response speed or capacity. Our analysis aims at informing what targeted Public Health and Social Measures would be required to bring the outbreak to an end, and what outbreak duration is likely under different epidemiological characteristics until more precise estimates of parameters such as the basic reproduction number or the incubation period for Bundibugyo become available.
+  \item By incorporating the delay to activation of non-pharmaceutical measures we hope to more accurately estimate what control measures are effective and feasible for this outbreak, rather than assuming the intervention is activated by the index case, which would be the case if the outbreak were known and imported into a different region.
+
 \end{itemize}
 
 \bibliographystyle{plainnat}
@@ -70,33 +82,14 @@ However, if the highly variable (overdispersed) individual-level transmission is
 
 \section{Code availability}
 
-The code to reproduce this analysis can be found at: https://github.com/joshwlambert/BundibugyoNPI2026.
+The code to reproduce this analysis can be found at: \url{https://github.com/joshwlambert/BundibugyoNPI2026}. \\
 
-The outbreak model code can be found in the R package \texttt{ringbp} at https://github.com/joshwlambert/ringbp@develop. This analysis used the \texttt{develop} branch of the ringbp package which can be installed with:
+The outbreak model code can be found in the R package \texttt{ringbp} at \url{https://github.com/joshwlambert/ringbp@develop}. This analysis used the \texttt{develop} branch of the ringbp package which can be installed with:
 
-\texttt{remotes::install_github("joshwlambert/ringbp@develop")}
+\texttt{remotes::install\_github("joshwlambert/ringbp@develop")}
 
 \section{AI Disclaimer}
 
 This work was assisted by the use of Claude Opus 4.7.
-
-\section{Appendix}
-
-\subsection{Calibrating the basic reproduction number ($R_0$)}
-
-Without a reliable estimate of the basic reproduction number ($R_0$) for Bundibugyo virus, either from the current outbreak (as of 20/05/2026) or from past outbreaks \citep{nash2024ebola}, we calibrated the community $R_0$ by sweeping it across a grid of plausible values and identifying the value most consistent with the observed early outbreak size. \\
-
-For each value of $R_0 \in \{1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0\}$ we ran 10{,}000 independent branching-process simulations. All non-$R_0$ parameters were fixed to the values used in the main analysis: a Negative Binomial community offspring distribution with dispersion parameter $k = 0.27$ \citep{polonsky2021novel}, a Gamma onset-to-isolation distribution with mean 5 days and standard deviation 2 days, an asymptomatic proportion of 25\%, 1\% presymptomatic transmission, and a single index case initiating the outbreak. Isolation and contact tracing were inactive throughout the calibration window (test capacity set to zero for $t \leq 35$ days) so that the simulated trajectories reflect unmitigated transmission, mirroring the assumption in the main analysis that no PHSMs were active prior to 20 May 2026. Each simulation used an independent random seed, and seeds were reset at the start of each $R_0$ sweep, so the runs are reproducible and the sweeps for different $R_0$ values are statistically independent. \\
-
-For each $R_0$ we recorded the proportion of simulations whose cumulative case count entered $[300, 1300]$ in any week overlapping days 21--35 of the outbreak, i.e. the same conditioning criterion as in the main analysis. The $R_0$ value yielding the highest acceptance proportion is taken as the best-supported value and is used in the main analysis; values yielding zero or near-zero acceptance over 10{,}000 runs are considered inconsistent with the observed early outbreak size. \\
-
-The proportion of simulation iterations that met the conditioning criteria for total outbreak size during weeks 3--5 increased with increasing $R_0$.
-
-\begin{figure}
-  \includegraphics[width=\textwidth]{../plots/BundibugyoR0Calibration.png}
-  \caption{Calibration of the community basic reproduction number ($R_0$) for Bundibugyo virus. Each point shows the proportion of 10{,}000 independent branching-process simulations whose cumulative case count entered the conditioning interval $[300, 1300]$ in at least one week overlapping days 21--35 of the outbreak, the same criterion used in the main analysis. All other parameters (offspring dispersion $k = 0.27$, onset-to-isolation distribution, asymptomatic and presymptomatic proportions, single index case, no active PHSMs) are held fixed at their main-analysis values; only the community $R_0$ varies between points. Runs are independent across $R_0$ values, with seeds reset at the start of each sweep.}
-  \label{fig:R0Calibration}
-\end{figure}
-
 
 \end{document}
