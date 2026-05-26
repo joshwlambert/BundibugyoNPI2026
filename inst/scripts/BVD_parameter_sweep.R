@@ -69,7 +69,7 @@ scenarios <- data.table(
     prop_presymptomatic = c(0.01),
     prop_asymptomatic = c(0.01),
     initial_cases = c(1),
-    quarantine = c(FALSE),
+    quarantine = c(FALSE, TRUE),
     test_sensitivity = 0.75,
     cap_max_days = 730,
     cap_cases = 10000
