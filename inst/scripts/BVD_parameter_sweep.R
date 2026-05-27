@@ -50,7 +50,7 @@ scenarios <- data.table(
           scale = medium_onset_to_isolation_params$scale
         ),
         \(n) rgamma(
-          n= n,
+          n = n,
           shape = fast_onset_to_isolation_params$shape,
           scale = fast_onset_to_isolation_params$scale
         )
@@ -69,7 +69,7 @@ scenarios <- data.table(
     prop_presymptomatic = c(0),
     prop_asymptomatic = c(0),
     initial_cases = c(1),
-    quarantine = c(FALSE, TRUE),
+    quarantine = c(FALSE),
     test_sensitivity = c(0.5, 0.75, 1),
     cap_max_days = 730,
     cap_cases = 10000
