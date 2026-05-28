@@ -4,6 +4,11 @@
 \usepackage{url}
 \usepackage{authblk}
 \renewcommand\Affilfont{\footnotesize}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\textcolor{red}{Not peer-reviewed}}
+\rhead{V1 (\today)}
 \usepackage{geometry}
 \geometry{
   a4paper,
@@ -11,6 +16,8 @@
   left=20mm,
   top=20mm,
 }
+\setlength{\headwidth}{\textwidth}
+\setlength{\headheight}{15pt}
 \usepackage{crimson}
 \usepackage[T1]{fontenc}
 \usepackage[numbers,super]{natbib}
@@ -29,6 +36,7 @@
 \begin{document}
 
 \maketitle
+\thispagestyle{fancy}
 
 \section*{Introduction}
 
